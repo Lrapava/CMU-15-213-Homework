@@ -1,7 +1,7 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * Solution author: Luka Rapava
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -256,8 +256,88 @@ int logicalNeg(int x) {
  *  Max ops: 90
  *  Rating: 4
  */
+/* 
+	Currently using 85<90 operatoins, 11 operations could 
+	be easily spared by replacing s >>= 1 with simple assignment
+	and computing ~0 only once, but I will leave it as is since
+	the code is more readable that way, it is within the limit
+	and compiler would do those optimizations anyways.
+*/	
 int howManyBits(int x) {
-	return 0;
+	
+	// invert if needed (6 operations). 
+	// Makes x positive
+	{
+		int ifxneg = (x >> 31);
+		int ifxpos = ~ifxneg;
+		x = (ifxpos&x) | (ifxneg&(~x));
+	}
+
+	// Task: find least significat 0 not superceded by 1
+	// Its position (0-based)+1 will be the answer.
+	// using binary to achieve this goal.
+	int l = 0, r = 32, s = 32, m;
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	// binary search step (13 operations)
+	{
+		s >>= 1;
+		m = l + s;
+		int isbust = !(x >> m);
+		int ifnobust = isbust + ~0;
+		int ifisbust = ~ifnobust;
+		l = (ifisbust&l) | (ifnobust&m);
+		r = (ifisbust&m) | (ifnobust&r);
+	}
+	return r+1; // (1 operatio)
 }
 //float
 /* 
