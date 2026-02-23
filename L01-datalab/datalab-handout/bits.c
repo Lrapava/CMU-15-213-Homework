@@ -164,7 +164,7 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-	return (!!(x^(~0))) & !((x+1+x)^(~0));
+  return (!!(x^(~0))) & !((x+1+x)^(~0));
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -262,82 +262,75 @@ int logicalNeg(int x) {
 	and computing ~0 only once, but I will leave it as is since
 	the code is more readable that way, it is within the limit
 	and compiler would do those optimizations anyways.
-*/	
-int howManyBits(int x) {
-	
-	// invert if needed (6 operations). 
-	// Makes x positive
-	{
-		int ifxneg = (x >> 31);
-		int ifxpos = ~ifxneg;
-		x = (ifxpos&x) | (ifxneg&(~x));
-	}
 
-	// Task: find least significat 0 not superceded by 1
-	// Its position (0-based)+1 will be the answer.
-	// using binary to achieve this goal.
-	int l = 0, r = 32, s = 32, m;
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	// binary search step (13 operations)
-	{
-		s >>= 1;
-		m = l + s;
-		int isbust = !(x >> m);
-		int ifnobust = isbust + ~0;
-		int ifisbust = ~ifnobust;
-		l = (ifisbust&l) | (ifnobust&m);
-		r = (ifisbust&m) | (ifnobust&r);
-	}
-	return r+1; // (1 operatio)
+	P.S. The dlc compiler seems to be inconsistent, which lead
+	me to refactor the code
+*/
+int howManyBits(int x) {
+  int ifxneg = (x >> 31);
+  int ifxpos = ~ifxneg;
+  
+  // x = (ifxpos&x) | (ifxneg&(~x));
+  int l = 0, r = 32, s = 32, m;
+  int isbust, ifnobust, ifisbust;
+  x = (ifxpos&x) | (ifxneg&(~x));
+  
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+
+  // binary search step (13 operations)
+  s >>= 1;
+  m = l + s;
+  isbust = !(x >> m);
+  ifnobust = isbust + ~0;
+  ifisbust = ~ifnobust;
+  l = (ifisbust&l) | (ifnobust&m);
+  r = (ifisbust&m) | (ifnobust&r);
+  
+  // (1 operatio)
+  return r+1; 
 }
 //float
 /* 
@@ -352,7 +345,19 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-  return 2;
+  unsigned sgn = uf & (1 << 31);
+  unsigned exp = uf & (255 << 23);
+  unsigned man = uf & ((1 << 23)-1);
+  // NaN, +-inf
+  if (exp == (255 << 23)) {
+  	return uf;
+  }
+  // denormalised
+  if (exp == 0) {
+  	return sgn | (man << 1);
+  }
+  // normalised
+  return sgn | (exp + (1 << 23)) | man;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -367,7 +372,35 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  return 2;
+  unsigned sgn = uf >> 31;
+  unsigned exp = (uf >> 23) & 255;
+  unsigned man = uf & ((1 << 23)-1);
+  const unsigned bias = (1 << 7)-1;
+
+  if (exp > bias + 31) {
+  	return 0x80000000u;
+  }
+  if (exp < bias) {
+  	return 0;
+  }
+  
+  man = man | (1 << 23);
+  if (exp > bias + 23) {
+    unsigned shift_factor = exp-(bias+23);
+	if (shift_factor > 31-23) {
+		return 0x80000000u;
+  	}
+  	man <<= shift_factor;
+  } else {
+    unsigned shift_factor = (bias+23)-exp;
+    if (shift_factor > 23) {
+    	return 0;
+    }
+    man >>= shift_factor;
+  }
+
+  return (sgn) ? -man : man;
+  
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
@@ -383,5 +416,21 @@ int floatFloat2Int(unsigned uf) {
  *   Rating: 4
  */
 unsigned floatPower2(int x) {
-    return 2;
+  const unsigned inf = 255 << 23;
+  const int bias = (1 << 7)-1;
+
+  // for extreme values of x, x+bias might overflow, 
+  // hence x > 255 check
+  if (x > 255 || x + bias >= 255) {
+     return inf;
+  // minus near bias since x < -bias <=> -x > bias 
+  // would likely fail for Tmin
+  } else if (x < -bias) {
+  	int shift_factor = 23 + bias - x ;
+  	if (shift_factor > 0) {
+  		return 1 << shift_factor;
+  	}
+  	return 0;
+  }
+  return (x+bias) << 23;
 }
